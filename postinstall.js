@@ -2,44 +2,21 @@ const path = require('path');
 const fs = require('fs');
 const chalk = require('chalk');
 
-const log = (message) => console.warn(chalk.white(message)); // eslint-disable-line
+const log = (message) => console.warn(chalk.white(message));
 
 const FILES = {
-  // eslintignore: {
-  //   source: '.eslintignore',
-  //   destination: '.eslintignore',
-  // },
   eslintrc: {
     source: 'eslintrc.js',
     destination: '.eslintrc.js',
   },
-  // jestConfig: {
-  //   source: 'jest.config.js',
-  //   destination: 'jest.config.js',
-  // },
-  // nodemonConfig: {
-  //   source: 'nodemon.json',
-  //   destination: 'nodemon.json',
-  //   onlyService: true,
-  //   onlyCopyIfNotExists: true,
-  // },
   prettierrc: {
     source: '.prettierrc',
     destination: '.prettierrc',
   },
-  // testJson: {
-  //   source: 'test.json',
-  //   destination: 'config/test.json',
-  //   onlyCopyIfNotExists: true,
-  // },
   tsConfig: {
     source: 'tsconfig.json',
     destination: 'tsconfig.json',
   },
-  // prodTsConfig: {
-  //   source: 'tsconfig.prod.json',
-  //   destination: 'tsconfig.prod.json',
-  // },
 };
 
 const packageJsonPath = path.join('../../', 'package.json');
@@ -51,7 +28,6 @@ const run = () => {
     process.exit(0);
   }
 
-  // remove old .eslintrc file
   if (fs.existsSync(oldEslintrcPath)) {
     fs.unlinkSync(oldEslintrcPath);
   }
@@ -68,18 +44,10 @@ const run = () => {
 
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
 
-  // packageJson.scripts['test'] = `jest`;
-  // packageJson.scripts['test:report'] = 'yarn test -- --coverage --ci';
-  // packageJson.scripts['test:watch'] = 'yarn test -- --watch';
-  packageJson.main = `dist/`;
-  packageJson.scripts['compile'] = `tsc -p ./tsconfig.json`;
-  packageJson.scripts['lint'] = 'eslint --color "src/**/*.{js,ts,jsx,tsx}"';
+  packageJson.scripts.lint = 'eslint --color "src/**/*.{js,ts,jsx,tsx}"';
   packageJson.scripts['lint:fix'] = 'eslint --fix "src/**/*.{js,ts,jsx,tsx}"';
   packageJson.scripts['prettier:fix'] = 'prettier --write "src/**/*.{js,ts,jsx,tsx}"';
   packageJson.scripts['lint:check'] = 'prettier -l "src/**/*.{js,ts,jsx,tsx}"';
-  packageJson.scripts['prebuild'] = 'yarn lint';
-  packageJson.scripts['prestart'] = 'yarn lint';
-  packageJson.scripts['pretest'] = 'yarn lint';
 
   fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
 };
