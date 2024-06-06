@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const chalk = require('chalk');
 
-const log = (message) => console.log(chalk.white(message)); // eslint-disable-line
+const log = (message) => console.warn(chalk.white(message)); // eslint-disable-line
 
 const FILES = {
   eslintignore: {
@@ -42,17 +42,13 @@ const FILES = {
   },
 };
 
-const packageJsonPath = path.join('../../../', 'package.json');
-const configPath = path.join('../../../', 'config');
-const oldEslintrcPath = path.join('../../../', '.eslintrc');
+const packageJsonPath = path.join('../../', 'package.json');
+const oldEslintrcPath = path.join('../../', '.eslintrc.js');
 
 const run = () => {
   if (!fs.existsSync(packageJsonPath)) {
-    log('Skipping install. because no parent package.json found');
+    console.error('Skipping install. because no parent package.json found');
     process.exit(0);
-  }
-  if (!fs.existsSync(configPath)) {
-    fs.mkdirSync(configPath);
   }
 
   // remove old .eslintrc file
@@ -62,7 +58,7 @@ const run = () => {
 
   Object.entries(FILES).forEach(([key, value]) => {
     const source = path.join(process.cwd(), value.source);
-    const destination = path.join('../../../', value.destination);
+    const destination = path.join('../../', value.destination);
 
     if (!value.onlyCopyIfNotExists || !fs.existsSync(destination)) {
       log(`Copy file ${source} to ${destination}`);
