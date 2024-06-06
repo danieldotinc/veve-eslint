@@ -68,11 +68,11 @@ const run = () => {
 
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
 
-  packageJson.main = `dist/`;
-  packageJson.scripts['compile'] = `tsc -p ./tsconfig.json`;
   // packageJson.scripts['test'] = `jest`;
   // packageJson.scripts['test:report'] = 'yarn test -- --coverage --ci';
   // packageJson.scripts['test:watch'] = 'yarn test -- --watch';
+  packageJson.main = `dist/`;
+  packageJson.scripts['compile'] = `tsc -p ./tsconfig.json`;
   packageJson.scripts['lint'] = 'eslint --color \"src/**/*.{js,ts,jsx,tsx}\"';
   packageJson.scripts['lint:fix'] = 'eslint --fix \"src/**/*.{js,ts,jsx,tsx}\"';
   packageJson.scripts['prettier:fix'] = 'prettier --write \"src/**/*.{js,ts,jsx,tsx}\"';
@@ -80,6 +80,8 @@ const run = () => {
   packageJson.scripts['prebuild'] = 'yran lint';
   packageJson.scripts['prestart'] = 'yran lint';
   packageJson.scripts['pretest'] = 'yarn lint';
+
+  fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
 };
 
 run();
