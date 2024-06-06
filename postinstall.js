@@ -4,8 +4,6 @@ const chalk = require('chalk');
 
 const log = (message) => console.log(chalk.white(message)); // eslint-disable-line
 
-const CONFIG_PATH = 'configs';
-
 const FILES = {
   eslintignore: {
     source: 'eslintignore',
@@ -62,16 +60,11 @@ const run = () => {
     fs.unlinkSync(oldEslintrcPath);
   }
 
-  // copy configs
-  const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
-  const isService = !!packageJson?.config?.port;
-
   Object.entries(FILES).forEach(([key, value]) => {
-    const source = path.join(process.cwd(), CONFIG_PATH, value.source);
+    const source = path.join(process.cwd(), value.source);
     const destination = path.join('../../../', value.destination);
 
     if (!value.onlyCopyIfNotExists || !fs.existsSync(destination)) {
-      if (value.onlyService && !isService) return;
       log(`Copy file ${source} to ${destination}`);
       fs.copyFileSync(source, destination);
     }
