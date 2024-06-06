@@ -1,6 +1,6 @@
 {
   "name": "rd-eslint-node-ts",
-  "version": "1.8.1",
+  "version": "1.8.2",
   "description": "R&D Quality Standard Tools",
   "main": "index.js",
   "scripts": {
