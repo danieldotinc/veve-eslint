@@ -23,10 +23,10 @@ const FILES = {
   //   onlyService: true,
   //   onlyCopyIfNotExists: true,
   // },
-  // prettierrc: {
-  //   source: 'prettierrc',
-  //   destination: '.prettierrc',
-  // },
+  prettierrc: {
+    source: '.prettierrc',
+    destination: '.prettierrc',
+  },
   // testJson: {
   //   source: 'test.json',
   //   destination: 'config/test.json',
@@ -73,10 +73,10 @@ const run = () => {
   // packageJson.scripts['test:watch'] = 'yarn test -- --watch';
   packageJson.main = `dist/`;
   packageJson.scripts['compile'] = `tsc -p ./tsconfig.json`;
-  packageJson.scripts['lint'] = 'eslint --color \"src/**/*.{js,ts,jsx,tsx}\"';
-  packageJson.scripts['lint:fix'] = 'eslint --fix \"src/**/*.{js,ts,jsx,tsx}\"';
-  packageJson.scripts['prettier:fix'] = 'prettier --write \"src/**/*.{js,ts,jsx,tsx}\"';
-  packageJson.scripts['lint:check'] = 'prettier -l \"src/**/*.{js,ts,jsx,tsx}\"';
+  packageJson.scripts['lint'] = 'eslint --color "src/**/*.{js,ts,jsx,tsx}"';
+  packageJson.scripts['lint:fix'] = 'eslint --fix "src/**/*.{js,ts,jsx,tsx}"';
+  packageJson.scripts['prettier:fix'] = 'prettier --write "src/**/*.{js,ts,jsx,tsx}"';
+  packageJson.scripts['lint:check'] = 'prettier -l "src/**/*.{js,ts,jsx,tsx}"';
   packageJson.scripts['prebuild'] = 'yarn lint';
   packageJson.scripts['prestart'] = 'yarn lint';
   packageJson.scripts['pretest'] = 'yarn lint';
