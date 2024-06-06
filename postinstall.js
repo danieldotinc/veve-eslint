@@ -5,41 +5,41 @@ const chalk = require('chalk');
 const log = (message) => console.warn(chalk.white(message)); // eslint-disable-line
 
 const FILES = {
-  eslintignore: {
-    source: '.eslintignore',
-    destination: '.eslintignore',
-  },
+  // eslintignore: {
+  //   source: '.eslintignore',
+  //   destination: '.eslintignore',
+  // },
   eslintrc: {
     source: 'eslintrc.js',
     destination: '.eslintrc.js',
   },
-  jestConfig: {
-    source: 'jest.config.js',
-    destination: 'jest.config.js',
-  },
-  nodemonConfig: {
-    source: 'nodemon.json',
-    destination: 'nodemon.json',
-    onlyService: true,
-    onlyCopyIfNotExists: true,
-  },
-  prettierrc: {
-    source: 'prettierrc',
-    destination: '.prettierrc',
-  },
-  testJson: {
-    source: 'test.json',
-    destination: 'config/test.json',
-    onlyCopyIfNotExists: true,
-  },
+  // jestConfig: {
+  //   source: 'jest.config.js',
+  //   destination: 'jest.config.js',
+  // },
+  // nodemonConfig: {
+  //   source: 'nodemon.json',
+  //   destination: 'nodemon.json',
+  //   onlyService: true,
+  //   onlyCopyIfNotExists: true,
+  // },
+  // prettierrc: {
+  //   source: 'prettierrc',
+  //   destination: '.prettierrc',
+  // },
+  // testJson: {
+  //   source: 'test.json',
+  //   destination: 'config/test.json',
+  //   onlyCopyIfNotExists: true,
+  // },
   tsConfig: {
     source: 'tsconfig.json',
     destination: 'tsconfig.json',
   },
-  prodTsConfig: {
-    source: 'tsconfig.prod.json',
-    destination: 'tsconfig.prod.json',
-  },
+  // prodTsConfig: {
+  //   source: 'tsconfig.prod.json',
+  //   destination: 'tsconfig.prod.json',
+  // },
 };
 
 const packageJsonPath = path.join('../../', 'package.json');
