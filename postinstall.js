@@ -6,7 +6,7 @@ const log = (message) => console.warn(chalk.white(message)); // eslint-disable-l
 
 const FILES = {
   eslintignore: {
-    source: 'eslintignore',
+    source: '.eslintignore',
     destination: '.eslintignore',
   },
   eslintrc: {
