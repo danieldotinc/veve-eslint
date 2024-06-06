@@ -77,8 +77,8 @@ const run = () => {
   packageJson.scripts['lint:fix'] = 'eslint --fix \"src/**/*.{js,ts,jsx,tsx}\"';
   packageJson.scripts['prettier:fix'] = 'prettier --write \"src/**/*.{js,ts,jsx,tsx}\"';
   packageJson.scripts['lint:check'] = 'prettier -l \"src/**/*.{js,ts,jsx,tsx}\"';
-  packageJson.scripts['prebuild'] = 'yran lint';
-  packageJson.scripts['prestart'] = 'yran lint';
+  packageJson.scripts['prebuild'] = 'yarn lint';
+  packageJson.scripts['prestart'] = 'yarn lint';
   packageJson.scripts['pretest'] = 'yarn lint';
 
   fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
