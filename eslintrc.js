@@ -67,7 +67,7 @@ module.exports = {
         message: '`with` is disallowed in strict mode because it makes code impossible to predict and optimize.',
       },
     ],
-    complexity: ['error', 7],
+    complexity: ['error', 10],
     'max-params': ['error', 3],
     'max-depth': ['error', 4],
     'max-statements': 'off',
@@ -113,6 +113,8 @@ module.exports = {
     'react/jsx-props-no-spreading': 'off',
     'react/static-property-placement': 'off',
     'react/state-in-constructor': 'off',
+    'react/react-in-jsx-scope': 'off',
+    'react/jsx-uses-react': 'off',
     'react/jsx-wrap-multilines': [
       'error',
       {
