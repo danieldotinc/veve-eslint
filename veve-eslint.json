@@ -1,0 +1,12 @@
+{
+    "typescript": "on",
+    "react": "on",
+    "reactHooks": "on",
+    "node": "on",
+    "airbnb": "on",
+    "promise": "on",
+    "prettier": "on",
+    "jsxA11y": "on",
+    "sonarjs": "on",
+    "import": "on"
+}

@@ -17,6 +17,10 @@ const FILES = {
     source: 'tsconfig.json',
     destination: 'tsconfig.json',
   },
+  veveEslint: {
+    source: 'veve-eslint.json',
+    destination: 'veve-eslint.json',
+  },
 };
 
 const packageJsonPath = path.join('../../', 'package.json');
