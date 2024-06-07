@@ -1,6 +1,6 @@
 const path = require('path');
 const fs = require('fs');
-const disable = require('./disable');
+const disableFile = require('./disable').default;
 
 const veveEslintJsonPath = path.join('../../', 'veve-eslint.json');
 const packageJsonPath = path.join(process.cwd(), 'package.json');
@@ -77,7 +77,7 @@ const run = () => {
       disabledPackages.push('import');
     }
 
-    disable(disabledPackages);
+    disableFile.disable(disabledPackages);
 
     fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
   }

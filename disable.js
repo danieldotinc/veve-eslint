@@ -49,4 +49,4 @@ const disable = (packageNames) => {
   });
 };
 
-module.export = disable;
+export default { disable };
