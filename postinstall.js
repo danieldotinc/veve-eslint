@@ -23,14 +23,17 @@ const FILES = {
   },
 };
 
+const veveEslintJsonPath = path.join('../../', 'veve-eslint.json');
 const packageJsonPath = path.join('../../', 'package.json');
 const oldEslintrcPath = path.join('../../', '.eslintrc.js');
 
 const run = () => {
-  if (!fs.existsSync(packageJsonPath)) {
+  if (!fs.existsSync(packageJsonPath) || !fs.existsSync(veveEslintJsonPath)) {
     console.error('Skipping install. because no parent package.json found');
     process.exit(0);
   }
+
+  const veveEslintJson = JSON.parse(fs.readFileSync(veveEslintJsonPath, 'utf-8'));
 
   if (fs.existsSync(oldEslintrcPath)) {
     fs.unlinkSync(oldEslintrcPath);
@@ -42,7 +45,9 @@ const run = () => {
 
     if (!value.onlyCopyIfNotExists || !fs.existsSync(destination)) {
       log(`Copy file ${source} to ${destination}`);
-      fs.copyFileSync(source, destination);
+      if (key === 'tsConfig' && veveEslintJson.typescript === 'off') {
+        // we don't copy ts config if typescript is off
+      } else fs.copyFileSync(source, destination);
     }
   });
 
