@@ -8,18 +8,22 @@ const FILES = {
   eslintrc: {
     source: 'eslintrc.js',
     destination: '.eslintrc.js',
+    rewrite: true
   },
   prettierrc: {
     source: '.prettierrc',
     destination: '.prettierrc',
+    rewrite: true
   },
   tsConfig: {
     source: 'tsconfig.json',
     destination: 'tsconfig.json',
+    rewrite: true
   },
   customEslint: {
     source: 'default-eslint.js',
     destination: 'custom-eslint.js',
+    rewrite: false
   },
 };
 
@@ -28,22 +32,23 @@ const packageJsonPath = path.join('../../', 'package.json');
 const oldEslintrcPath = path.join('../../', '.eslintrc.js');
 
 const run = () => {
-  if (!fs.existsSync(packageJsonPath) || !fs.existsSync(customEslintJsonPath)) {
+  if (!fs.existsSync(packageJsonPath)) {
     console.error('Skipping install. because no parent package.json found');
     process.exit(0);
   }
-
-  const eslintJson = JSON.parse(fs.readFileSync(customEslintJsonPath, 'utf-8'));
-
+  
   if (fs.existsSync(oldEslintrcPath)) {
     fs.unlinkSync(oldEslintrcPath);
   }
-
+  
   Object.entries(FILES).forEach(([key, value]) => {
     const source = path.join(process.cwd(), value.source);
     const destination = path.join('../../', value.destination);
 
-    if (!value.onlyCopyIfNotExists || !fs.existsSync(destination)) {
+    let eslintJson = {};
+    if (fs.existsSync(customEslintJsonPath)) eslintJson = JSON.parse(fs.readFileSync(customEslintJsonPath, 'utf-8'));
+
+    if ((fs.existsSync(destination) && value.rewrite) || !fs.existsSync(destination)) {
       log(`Copy file ${source} to ${destination}`);
       if (key === 'tsConfig' && eslintJson.typescript === 'off') {
         // we don't copy ts config if typescript is off
