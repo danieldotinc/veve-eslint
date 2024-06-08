@@ -1,15 +1,16 @@
 const path = require('path');
 const fs = require('fs');
-const disableFile = require('./disable').default;
+const { generate } = require('./eslint');
 
-const veveEslintJsonPath = path.join('../../', 'veve-eslint.json');
+// const veveEslintJsonPath = path.join('../../', 'veve-eslint.json');
+const veveEslintJsonPath = path.join(process.cwd(), 'veve-eslint.json');
 const packageJsonPath = path.join(process.cwd(), 'package.json');
 
 const run = () => {
+  const disabledPackages = [];
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
 
   if (fs.existsSync(veveEslintJsonPath)) {
-    const disabledPackages = [];
     const veveEslintJson = JSON.parse(fs.readFileSync(veveEslintJsonPath, 'utf-8'));
     if (veveEslintJson.typescript === 'off') {
       // drop typescript rules
@@ -26,7 +27,7 @@ const run = () => {
       disabledPackages.push('react');
     }
 
-    if (veveEslintJson.reactHooks === 'off') {
+    if (veveEslintJson['react-hooks'] === 'off') {
       // drop reactHooks rules
       delete packageJson.dependencies['eslint-plugin-react-hooks'];
       disabledPackages.push('react-hooks');
@@ -59,7 +60,7 @@ const run = () => {
       disabledPackages.push('promise');
     }
 
-    if (veveEslintJson.jsxA11y === 'off') {
+    if (veveEslintJson['jsx-a11y'] === 'off') {
       // drop jsx-a11y rules
       delete packageJson.dependencies['eslint-plugin-jsx-a11y'];
       disabledPackages.push('jsx-a11y');
@@ -77,8 +78,10 @@ const run = () => {
       disabledPackages.push('import');
     }
 
-    disableFile.disable(disabledPackages);
+  }
 
+  if (disabledPackages.length) {
+    generate(disabledPackages);
     fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
   }
 };
