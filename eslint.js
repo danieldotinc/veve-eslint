@@ -14,12 +14,21 @@ const generate = (packageNames) => {
     if (config.rules) {
         for (const rule in config.rules) {
         for (const packageName of packageNames) {
-            if (rule.includes(packageName)) delete config.rules[rule];
+            if (rule.startsWith(packageName) || rule.startsWith("@" + packageName)) delete config.rules[rule];
         }
         }
     }
 
-    const modifiedConfigString = `module.exports = ${JSON.stringify(config, null, 2)};`;
+   const parser = `"parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": ["./tsconfig.json"],
+    "tsconfigRootDir": __dirname,
+    "ecmaVersion": 2022,
+    "sourceType": 'module',
+  },`;
+
+    let modifiedConfigString = `module.exports = ${JSON.stringify(config, null, 2)};`;
+    modifiedConfigString = modifiedConfigString.replace('"parser": 1,', parser);
 
     const eslintPath = path.join(process.cwd(), 'eslintrc.js');
     fs.writeFile(eslintPath, modifiedConfigString, 'utf8', (err) => {

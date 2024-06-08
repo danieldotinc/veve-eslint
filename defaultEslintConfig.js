@@ -1,14 +1,8 @@
 module.exports = {
+  parser: 1,
   env: {
     browser: true,
     es2022: true,
-  },
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    project: ['./tsconfig.json'],
-    tsconfigRootDir: __dirname,
-    ecmaVersion: 2022,
-    sourceType: 'module',
   },
   extends: [
     'airbnb',
