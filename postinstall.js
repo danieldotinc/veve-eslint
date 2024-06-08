@@ -27,12 +27,12 @@ const FILES = {
   },
   customEslint: {
     source: 'default-eslint.js',
-    destination: 'custom-eslint.js',
+    destination: '.custom-eslint.js',
     rewrite: false
   },
 };
 
-const customEslintJsonPath = path.join('../../', 'custom-eslint.js');
+const customEslintJsonPath = path.join('../../', '.custom-eslint.js');
 const packageJsonPath = path.join('../../', 'package.json');
 const oldEslintrcPath = path.join('../../', '.eslintrc.js');
 
@@ -65,10 +65,11 @@ const run = () => {
 
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
 
-  packageJson.scripts.lint = 'eslint --color "src/**/*.{js,ts,jsx,tsx}"';
-  packageJson.scripts['lint:fix'] = 'eslint --fix "src/**/*.{js,ts,jsx,tsx}"';
-  packageJson.scripts['prettier:fix'] = 'prettier --write "src/**/*.{js,ts,jsx,tsx}"';
-  packageJson.scripts['lint:check'] = 'prettier -l "src/**/*.{js,ts,jsx,tsx}"';
+  const { root } = require('./default-eslint');
+  packageJson.scripts.lint = `eslint --color "${root}/**/*.{js,ts,jsx,tsx}"`;
+  packageJson.scripts[`lint:fix`] = `eslint --fix "${root}/**/*.{js,ts,jsx,tsx}"`;
+  packageJson.scripts[`prettier:fix`] = `prettier --write "${root}/**/*.{js,ts,jsx,tsx}"`;
+  packageJson.scripts[`lint:check`] = `prettier -l "${root}/**/*.{js,ts,jsx,tsx}"`;
 
   fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
 };

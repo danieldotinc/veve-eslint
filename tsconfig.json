@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
-    // "jsx": "react",
-    // "lib": ["es2022", "DOM"],
+    "jsx": "react",
     "target": "es2022",
     "module": "commonjs",
     "allowJs": true,
@@ -17,7 +16,7 @@
     "moduleResolution": "node",
     "outDir": "dist",
     "resolveJsonModule": true,
-    "lib": ["es2022"],
+    "lib": ["es2022", "DOM"],
     "skipLibCheck": true,
     "typeRoots": [
       "./src/types",
