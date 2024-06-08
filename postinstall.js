@@ -65,7 +65,8 @@ const run = () => {
 
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
 
-  const { root } = require('./default-eslint');
+  // at this point .custom-eslint.js is generated so we can access it
+  const { root } = require('../../.custom-eslint.js');
   packageJson.scripts.lint = `eslint --color "${root}/**/*.{js,ts,jsx,tsx}"`;
   packageJson.scripts[`lint:fix`] = `eslint --fix "${root}/**/*.{js,ts,jsx,tsx}"`;
   packageJson.scripts[`prettier:fix`] = `prettier --write "${root}/**/*.{js,ts,jsx,tsx}"`;
