@@ -7,15 +7,15 @@ const generate = (packageNames) => {
 
     if (config.extends) {
         for (const packageName of packageNames) {
-        config.extends = config.extends.filter((item) => item.includes(packageName));
+            config.extends = config.extends.filter((item) => !item.includes(packageName));
         }
     }
 
     if (config.rules) {
         for (const rule in config.rules) {
-        for (const packageName of packageNames) {
-            if (rule.startsWith(packageName) || rule.startsWith("@" + packageName)) delete config.rules[rule];
-        }
+            for (const packageName of packageNames) {
+                if (rule.startsWith(packageName) || rule.startsWith("@" + packageName)) delete config.rules[rule];
+            }
         }
     }
 
