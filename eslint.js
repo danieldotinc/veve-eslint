@@ -40,6 +40,8 @@ const generate = (excludedPackageNames) => {
     modifiedConfigString = modifiedConfigString.replace('"parser": 1,', parser);
 
     const eslintPath = path.join(process.cwd(), 'eslintrc.js');
+    if (fs.existsSync(eslintPath)) fs.unlinkSync(eslintPath);
+    
     fs.writeFile(eslintPath, modifiedConfigString, 'utf8', (err) => {
         if (err) {
         console.error('Error writing the file:', err);
