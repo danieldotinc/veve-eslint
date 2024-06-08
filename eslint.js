@@ -32,4 +32,4 @@ const generate = (packageNames) => {
 
 };
 
-export default { generate };
+module.exports = { generate };
