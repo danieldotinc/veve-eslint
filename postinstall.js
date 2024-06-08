@@ -51,13 +51,13 @@ const run = () => {
     const destination = path.join('../../', value.destination);
 
     let eslintJson = {};
-    if (fs.existsSync(customEslintJsonPath)) eslintJson = JSON.parse(fs.readFileSync(customEslintJsonPath, 'utf-8'));
+    if (fs.existsSync(customEslintJsonPath)) eslintJson = require('../../.custom-eslint.js')
 
     if ((fs.existsSync(destination) && value.rewrite) || !fs.existsSync(destination)) {
       if (fs.existsSync(destination) && value.rewrite) fs.unlinkSync(destination);
 
       log(`Copy file ${source} to ${destination}`);
-      if (key === 'tsConfig' && eslintJson.typescript === 'off') {
+      if (key === 'tsConfig' && eslintJson.plugins.typescript === 'off') {
         // we don't copy ts config if typescript is off
       } else fs.copyFileSync(source, destination);
     }
