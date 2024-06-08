@@ -80,10 +80,9 @@ const run = () => {
 
   }
 
-  if (disabledPackages.length) {
-    generate(disabledPackages);
-    fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
-  }
+
+  generate(disabledPackages);
+  fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
 };
 
 run();
