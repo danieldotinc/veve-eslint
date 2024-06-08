@@ -1,6 +1,6 @@
 {
   "name": "veve-eslint",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "description": "quality standard rules for apps written in typescript",
   "main": "index.js",
   "scripts": {
