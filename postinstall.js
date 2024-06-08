@@ -10,6 +10,11 @@ const FILES = {
     destination: '.eslintrc.js',
     rewrite: true
   },
+  eslintignore: {
+    source: '.eslintignore',
+    destination: '.eslintignore',
+    rewrite: true
+  },
   prettierrc: {
     source: '.prettierrc',
     destination: '.prettierrc',
