@@ -2,30 +2,39 @@ const fs = require('fs');
 const path = require('path');
 const eslintrc = require('./defaultEslintConfig');
 
-const generate = (packageNames) => {
+const generate = (excludedPackageNames) => {
     const config = { ...eslintrc };
 
     if (config.extends) {
-        for (const packageName of packageNames) {
+        for (const packageName of excludedPackageNames) {
             config.extends = config.extends.filter((item) => !item.includes(packageName));
         }
     }
 
     if (config.rules) {
         for (const rule in config.rules) {
-            for (const packageName of packageNames) {
+            for (const packageName of excludedPackageNames) {
                 if (rule.startsWith(packageName) || rule.startsWith("@" + packageName)) delete config.rules[rule];
             }
         }
     }
 
-   const parser = `"parser": "@typescript-eslint/parser",
+    let parser = `"parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": ["./tsconfig.json"],
     "tsconfigRootDir": __dirname,
     "ecmaVersion": 2022,
+    "sourceType": "module",
+  },`;
+
+    if (excludedPackageNames.includes('typescript')) {
+        parser = `"parser": "@babel/eslint-parser",
+  "parserOptions": {
+    "requireConfigFile": false,
     "sourceType": 'module',
   },`;
+    }
+
 
     let modifiedConfigString = `module.exports = ${JSON.stringify(config, null, 2)};`;
     modifiedConfigString = modifiedConfigString.replace('"parser": 1,', parser);

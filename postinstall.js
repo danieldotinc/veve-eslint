@@ -17,23 +17,23 @@ const FILES = {
     source: 'tsconfig.json',
     destination: 'tsconfig.json',
   },
-  veveEslint: {
-    source: 'veve-eslint.json',
-    destination: 'veve-eslint.json',
+  customEslint: {
+    source: 'default-eslint.js',
+    destination: 'custom-eslint.js',
   },
 };
 
-const veveEslintJsonPath = path.join('../../', 'veve-eslint.json');
+const customEslintJsonPath = path.join('../../', 'custom-eslint.js');
 const packageJsonPath = path.join('../../', 'package.json');
 const oldEslintrcPath = path.join('../../', '.eslintrc.js');
 
 const run = () => {
-  if (!fs.existsSync(packageJsonPath) || !fs.existsSync(veveEslintJsonPath)) {
+  if (!fs.existsSync(packageJsonPath) || !fs.existsSync(customEslintJsonPath)) {
     console.error('Skipping install. because no parent package.json found');
     process.exit(0);
   }
 
-  const veveEslintJson = JSON.parse(fs.readFileSync(veveEslintJsonPath, 'utf-8'));
+  const eslintJson = JSON.parse(fs.readFileSync(customEslintJsonPath, 'utf-8'));
 
   if (fs.existsSync(oldEslintrcPath)) {
     fs.unlinkSync(oldEslintrcPath);
@@ -45,7 +45,7 @@ const run = () => {
 
     if (!value.onlyCopyIfNotExists || !fs.existsSync(destination)) {
       log(`Copy file ${source} to ${destination}`);
-      if (key === 'tsConfig' && veveEslintJson.typescript === 'off') {
+      if (key === 'tsConfig' && eslintJson.typescript === 'off') {
         // we don't copy ts config if typescript is off
       } else fs.copyFileSync(source, destination);
     }
