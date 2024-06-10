@@ -70,7 +70,6 @@ module.exports = {
     'max-statements-per-line': ['error', { max: 1 }],
     'max-lines-per-function': 'off',
     'curly': ['error', 'multi-or-nest'],
-    'max-len': ['error', { 'code': 120 }],
     'import/no-unresolved': 'warn',
     'operator-linebreak': 'off',
     'react/forbid-prop-types': 'off',
