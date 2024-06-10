@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
-    "jsx": "react",
+    "jsx": "react-jsx",
     "target": "es2022",
     "module": "commonjs",
+    "types": ["node"],
     "allowJs": true,
     "sourceMap": true,
     "declaration": true,
@@ -18,15 +19,7 @@
     "resolveJsonModule": true,
     "lib": ["es2022", "DOM"],
     "skipLibCheck": true,
-    "typeRoots": [
-      "./src/types",
-      "./node_modules/@types"
-    ],
-    "paths": {
-      "*": [
-          "./src/types/*"
-      ]
-    }
+    "composite": true,
   },
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
 }
