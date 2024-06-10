@@ -50,8 +50,9 @@ const run = () => {
     const source = path.join(process.cwd(), value.source);
     const destination = path.join('../../', value.destination);
 
-    let eslintJson = {};
+    let eslintJson;
     if (fs.existsSync(customEslintJsonPath)) eslintJson = require('../../.custom-eslint.js')
+    else eslintJson = require('./default-eslint.js');
 
     if ((fs.existsSync(destination) && value.rewrite) || !fs.existsSync(destination)) {
       if (fs.existsSync(destination) && value.rewrite) fs.unlinkSync(destination);
