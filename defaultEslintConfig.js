@@ -74,6 +74,7 @@ module.exports = {
     'react/forbid-prop-types': 'off',
     'linebreak-style': 'off',
     'class-methods-use-this': 'off',
+    'arrow-body-style': ['error', 'as-needed'],
     'arrow-parens': 'off',
     'react/no-danger': 'off',
     'jsx-a11y/no-static-element-interactions': 'off',
