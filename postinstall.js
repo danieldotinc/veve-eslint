@@ -7,28 +7,23 @@ const log = (message) => console.warn(chalk.white(message));
 const FILES = {
   eslintrc: {
     source: 'eslintrc.js',
-    destination: '.eslintrc.js',
-    rewrite: true
+    destination: '.eslintrc.js'
   },
   eslintignore: {
     source: '.eslintignore',
-    destination: '.eslintignore',
-    rewrite: true
+    destination: '.eslintignore'
   },
   prettierrc: {
     source: '.prettierrc',
-    destination: '.prettierrc',
-    rewrite: true
+    destination: '.prettierrc'
   },
-  tsConfig: {
+  tsconfig: {
     source: 'tsconfig.json',
-    destination: 'tsconfig.json',
-    rewrite: true
+    destination: 'tsconfig.json'
   },
   customEslint: {
     source: 'default-eslint.js',
-    destination: '.custom-eslint.js',
-    rewrite: false
+    destination: '.custom-eslint.js'
   },
 };
 
@@ -54,11 +49,11 @@ const run = () => {
     if (fs.existsSync(customEslintJsonPath)) eslintJson = require('../../.custom-eslint.js')
     else eslintJson = require('./default-eslint.js');
 
-    if ((fs.existsSync(destination) && value.rewrite) || !fs.existsSync(destination)) {
-      if (fs.existsSync(destination) && value.rewrite) fs.unlinkSync(destination);
+    if ((fs.existsSync(destination) && eslintJson.overwrite[key] === 'on') || !fs.existsSync(destination)) {
+      if (fs.existsSync(destination) && eslintJson.overwrite[key] === 'on') fs.unlinkSync(destination);
 
       log(`Copy file ${source} to ${destination}`);
-      if (key === 'tsConfig' && eslintJson.plugins.typescript === 'off') {
+      if (key === 'tsconfig' && eslintJson.plugins.typescript === 'off') {
         // we don't copy ts config if typescript is off
       } else fs.copyFileSync(source, destination);
     }
