@@ -29,16 +29,11 @@ const FILES = {
 
 const customEslintJsonPath = path.join('../../', '.custom-eslint.js');
 const packageJsonPath = path.join('../../', 'package.json');
-const oldEslintrcPath = path.join('../../', '.eslintrc.js');
 
 const run = () => {
   if (!fs.existsSync(packageJsonPath)) {
     console.error('Skipping install. because no parent package.json found');
     process.exit(0);
-  }
-  
-  if (fs.existsSync(oldEslintrcPath)) {
-    fs.unlinkSync(oldEslintrcPath);
   }
   
   Object.entries(FILES).forEach(([key, value]) => {
@@ -49,8 +44,8 @@ const run = () => {
     if (fs.existsSync(customEslintJsonPath)) eslintJson = require('../../.custom-eslint.js')
     else eslintJson = require('./default-eslint.js');
 
-    if ((fs.existsSync(destination) && eslintJson.overwrite?.[key] === 'on') || !fs.existsSync(destination)) {
-      if (fs.existsSync(destination) && eslintJson.overwrite?.[key] === 'on') fs.unlinkSync(destination);
+    if ((fs.existsSync(destination) && eslintJson.overwrite?.[key] == 'on') || !fs.existsSync(destination)) {
+      if (fs.existsSync(destination) && eslintJson.overwrite?.[key] == 'on') fs.unlinkSync(destination);
 
       log(`Copy file ${source} to ${destination}`);
       if (key === 'tsconfig' && eslintJson.plugins.typescript === 'off') {
