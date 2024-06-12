@@ -1,7 +1,19 @@
 {
   "name": "veve-eslint",
   "version": "1.9.14",
-  "description": "quality standard rules for apps (node, react, next...) written in typescript/javascript",
+  "description": "Quality standard rules for apps (node, react, next...) written in typescript/javascript",
+  "keywords": [
+    "eslint",
+    "eslint rules",
+    "eslint react",
+    "eslint node",
+    "eslint prettier",
+    "eslint typescript",
+    "eslint sonarjs",
+    "eslint airbnb",
+    "eslint jsx-a11y",
+    "quality standard rules"
+  ],
   "scripts": {
     "preinstall": "node preinstall.js",
     "postinstall": "node postinstall.js"
