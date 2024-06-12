@@ -27,7 +27,7 @@ module.exports = {
 }
 ```
 
-if you want to use this for a front-end app (react or node), you need to enable (mark as "on") the front-end dependencies ("jsx-a11y", "react", "react-hooks").
+if you want to use this for a front-end app (react or next), you need to enable (mark as "on") the front-end dependencies ("jsx-a11y", "react", "react-hooks").
 
 if you don't add this manually, it will automatically be created with the default config (above). but then if you change any of the above, you need to uninstall and install the package again (without removing the .custom-eslint.js config).
 
