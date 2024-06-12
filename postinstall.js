@@ -49,8 +49,8 @@ const run = () => {
     if (fs.existsSync(customEslintJsonPath)) eslintJson = require('../../.custom-eslint.js')
     else eslintJson = require('./default-eslint.js');
 
-    if ((fs.existsSync(destination) && eslintJson.overwrite[key] === 'on') || !fs.existsSync(destination)) {
-      if (fs.existsSync(destination) && eslintJson.overwrite[key] === 'on') fs.unlinkSync(destination);
+    if ((fs.existsSync(destination) && eslintJson.overwrite?.[key] === 'on') || !fs.existsSync(destination)) {
+      if (fs.existsSync(destination) && eslintJson.overwrite?.[key] === 'on') fs.unlinkSync(destination);
 
       log(`Copy file ${source} to ${destination}`);
       if (key === 'tsconfig' && eslintJson.plugins.typescript === 'off') {
