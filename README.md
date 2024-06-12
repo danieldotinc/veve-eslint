@@ -2,16 +2,18 @@
 
 Quality standard rules for apps (node, react, next...) written in typescript/javascript
 
-### why is it called "veve-eslint"?
-This package is inspired by a legendary software team that I used to be part of called "veve".
+### Why Is It Called "veve-eslint"? 🤔
+This package is inspired by a legendary software team 🦄 that I used to be a part of called "veve".
 
-The name "veve" is a creative abbreviation of the German word "Vertragsverwaltung" which means "contract organizing". veve team (which probably means Maks 🤔) initially started this combination of lint rules by combining other popular eslint plugins like prettier, sonarjs, airbnb, jsx-a11y...
+The name "veve" is a creative abbreviation of the German word "Vertragsverwaltung" which means "contract organizing". 
 
-As a member of that team I loved using this combination of rules in all of our projects to ensure high quality code standards, code consistency across projects and developers, avoiding potential bugs and unnecessary clutter in the code and many other benefits like more efficient pull request reviews: focusing more on the logic and functionality and less on the code conventions.
+veve team (which probably means Maks 🥷🏻) initially started this combination of lint rules by combining other popular eslint plugins like prettier, sonarjs, airbnb, jsx-a11y...
 
-I miss the legendary developers that I've got to work with in that team: Maksym, Fabian, Denis, Patrick, Ugurcan, Slim, Valentin, Rodrigo, Maria, Alex, Travis, Suleman, Nejla, and Sary.
+As a member of that team I 💙ed using this combination of rules in all of our projects to ensure high quality code standards, code consistency across projects and developers, avoiding potential bugs 🐞 and unnecessary clutter 🧹 in the code and many other benefits like more efficient pull request reviews: focusing more on the logic and functionality and less on the code conventions.
 
-### before installation
+I miss 😢 the legendary developers that I've got to work with in that team: Maksym 🇺🇦, Fabian 🇩🇪, Denis 🇷🇺, Patrick 🇩🇪, Ugurcan 🇹🇷, Slim 🇹🇳, Valentin 🇩🇪, Rodrigo 🇧🇷, Maria 🇺🇦, Alex 🇷🇺, Travis 🇭🇰, Suleman 🇵🇰, Nejla 🇲🇰, Sary 🇪🇬 and me 🇮🇷.
+
+### Add Custom Config Before Installation
 
 its better to create the following configuration `.custom-eslint.js` in the root of your project (next to package.json) and disable or enable some dependencies/rules before installation of the package:
 
@@ -31,15 +33,25 @@ module.exports = {
         "react": "off",
         "react-hooks": "off"
     },
-    root: "src"
+    root: "src",
+    overwrite: {
+        // if you don't want your custom changes to these files to be overwritten 
+        //     by each install of the package, mark the respective file as "off"
+        "tsconfig": "on",
+        "eslintrc": "on",
+        "eslintignore": "on",
+        "prettierrc": "on",
+    }
 }
 ```
 
-if you want to use this package for a front-end app (react or next), you need to enable (mark as "on") the front-end dependencies ("jsx-a11y", "react", "react-hooks").
+- if you want to use this package for a front-end app (react or next), you need to enable (mark as "on") the front-end dependencies ("jsx-a11y", "react", "react-hooks").
 
-if you want to use this package for a "next" project, you also need to change "root" field to "app" (if that's your root for your frontend files)
+- if you want to use this package for a "next" project, you also need to change "root" field to "app" (if that's your root for your frontend files)
 
-if you don't add this config file manually before installation, it will automatically be created with the default config (above), but then if you change any of the default config, you need to uninstall and install the package again (for your custom changes to take place don't remove the .custom-eslint.js config).
+- if you don't add this config file manually before installation, it will automatically be created with the default config (above), but then if you change any of the default config, you need to uninstall and install the package again (for your custom changes to take place don't remove the ".custom-eslint.js" config).
+
+- with every installation your config files (tsconfig, eslintrc, eslintignore, prettierrc) will be overwritten with the default files. To avoid that, in case of having some custom changes to any of these files, you must mark the overwrite option for that file as "off".
 
 
 
