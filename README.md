@@ -1,6 +1,10 @@
 # veve-eslint
 
-Quality standard rules for apps (node, react, next...) written in typescript/javascript
+Quality standard coding rules for frontend or backend apps (node, react, next…), typescript or javascript apps.
+
+- This package is a combination of popular eslint packages like: prettier, sonarjs, airbnb, jsx-a11y...
+
+- This package is highly customizable, you can disable its internal dependencies! 🤩, plugins and overwrite its rules.
 
 ### Why Is It Called "veve-eslint"? 🤔
 This package is inspired by a legendary software team 🦄 that I used to be a part of called "veve".
