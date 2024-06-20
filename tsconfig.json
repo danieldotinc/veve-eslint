@@ -20,6 +20,10 @@
     "lib": ["es2022", "DOM"],
     "skipLibCheck": true,
     "composite": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
   },
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules", "dist"],
 }
