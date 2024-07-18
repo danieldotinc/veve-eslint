@@ -58,9 +58,9 @@ const run = () => {
 
   // at this point .custom-eslint.js is generated so we can access it
   const { root } = require('../../.custom-eslint.js');
-  packageJson.scripts['lint'] = `ESLINT_USE_FLAT_CONFIG=false && eslint --color "${root}/**/*.{js,ts,jsx,tsx}"`;
+  packageJson.scripts['lint'] = `export ESLINT_USE_FLAT_CONFIG=false && eslint --color "${root}/**/*.{js,ts,jsx,tsx}"`;
   packageJson.scripts['lint:win'] = `SET ESLINT_USE_FLAT_CONFIG=false&&eslint --color "${root}/**/*.{js,ts,jsx,tsx}"`;
-  packageJson.scripts[`lint:fix`] = `ESLINT_USE_FLAT_CONFIG=false && eslint --fix "${root}/**/*.{js,ts,jsx,tsx}"`;
+  packageJson.scripts[`lint:fix`] = `export ESLINT_USE_FLAT_CONFIG=false && eslint --fix "${root}/**/*.{js,ts,jsx,tsx}"`;
   packageJson.scripts[`lint:fix:win`] = `SET ESLINT_USE_FLAT_CONFIG=false&&eslint --fix "${root}/**/*.{js,ts,jsx,tsx}"`;
   packageJson.scripts[`prettier:fix`] = `prettier --write "${root}/**/*.{js,ts,jsx,tsx}"`;
   packageJson.scripts[`lint:check`] = `prettier -l "${root}/**/*.{js,ts,jsx,tsx}"`;
