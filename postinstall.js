@@ -7,11 +7,7 @@ const log = (message) => console.warn(chalk.white(message));
 const FILES = {
   eslintrc: {
     source: 'eslintrc.js',
-    destination: '.eslintrc.js'
-  },
-  eslintignore: {
-    source: '.eslintignore',
-    destination: '.eslintignore'
+    destination: 'eslint.config.mjs'
   },
   prettierrc: {
     source: '.prettierrc',
@@ -27,8 +23,8 @@ const FILES = {
   },
 };
 
-const customEslintJsonPath = path.join('../../', '.custom-eslint.js');
-const packageJsonPath = path.join('../../', 'package.json');
+const customEslintJsonPath = path.join('./test/', '.custom-eslint.js');
+const packageJsonPath = path.join('./test/', 'package.json');
 
 const run = () => {
   if (!fs.existsSync(packageJsonPath)) {
@@ -38,10 +34,10 @@ const run = () => {
   
   Object.entries(FILES).forEach(([key, value]) => {
     const source = path.join(process.cwd(), value.source);
-    const destination = path.join('../../', value.destination);
+    const destination = path.join('./test/', value.destination);
 
     let eslintJson;
-    if (fs.existsSync(customEslintJsonPath)) eslintJson = require('../../.custom-eslint.js')
+    if (fs.existsSync(customEslintJsonPath)) eslintJson = require('./test/.custom-eslint.js')
     else eslintJson = require('./default-eslint.js');
 
     if ((fs.existsSync(destination) && eslintJson.overwrite?.[key] == 'on') || !fs.existsSync(destination)) {
@@ -57,11 +53,9 @@ const run = () => {
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
 
   // at this point .custom-eslint.js is generated so we can access it
-  const { root } = require('../../.custom-eslint.js');
-  packageJson.scripts['lint'] = `export ESLINT_USE_FLAT_CONFIG=false && eslint --color "${root}/**/*.{js,ts,jsx,tsx}"`;
-  packageJson.scripts['lint:win'] = `SET ESLINT_USE_FLAT_CONFIG=false&&eslint --color "${root}/**/*.{js,ts,jsx,tsx}"`;
-  packageJson.scripts[`lint:fix`] = `export ESLINT_USE_FLAT_CONFIG=false && eslint --fix "${root}/**/*.{js,ts,jsx,tsx}"`;
-  packageJson.scripts[`lint:fix:win`] = `SET ESLINT_USE_FLAT_CONFIG=false&&eslint --fix "${root}/**/*.{js,ts,jsx,tsx}"`;
+  const { root } = require('./test/.custom-eslint.js');
+  packageJson.scripts['lint'] = `eslint --color "${root}/"`;
+  packageJson.scripts[`lint:fix`] = `eslint --fix "${root}/"`;
   packageJson.scripts[`prettier:fix`] = `prettier --write "${root}/**/*.{js,ts,jsx,tsx}"`;
   packageJson.scripts[`lint:check`] = `prettier -l "${root}/**/*.{js,ts,jsx,tsx}"`;
 

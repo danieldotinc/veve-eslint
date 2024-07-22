@@ -2,42 +2,41 @@ const fs = require('fs');
 const path = require('path');
 const eslintrc = require('./defaultEslintConfig');
 
-const generate = (excludedPackageNames) => {
-    const config = { ...eslintrc };
+const generate = (config) => {
+    // use string instead of json
+    // const config = { ...eslintrc };
 
-    if (config.extends) {
-        for (const packageName of excludedPackageNames) {
-            config.extends = config.extends.filter((item) => !item.includes(packageName));
-        }
-    }
+    const content = fs.readFileSync('./defaultEslintConfig.js', 'utf8');
 
-    if (config.rules) {
-        for (const rule in config.rules) {
-            for (const packageName of excludedPackageNames) {
-                if (rule.startsWith(packageName) || rule.startsWith("@" + packageName)) delete config.rules[rule];
-            }
-        }
-    }
+    const modifiedContent = modifyFileContent(content, excludedPackageNames);
 
-    let parser = `"parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "project": ["./tsconfig.json"],
-    "tsconfigRootDir": __dirname,
-    "ecmaVersion": 2022,
-    "sourceType": "module",
-  },`;
-
+    const isUseNode = excludedPackageNames.includes('node');
+    let languageOptions;
     if (excludedPackageNames.includes('typescript')) {
-        parser = `"parser": "@babel/eslint-parser",
-  "parserOptions": {
-    "requireConfigFile": false,
-    "sourceType": 'module',
-  },`;
+        languageOptions = 
+            `languageOptions: {
+                globals: {
+                    ...globals.browser,
+                    ${isUseNode ? '...globals.node' : ''},
+                },
+                parser: tsParser,
+                parserOptions: {
+                  programs: [parser.createProgram('tsconfig.json')],
+                },
+            },`
+    } else {
+        languageOptions = 
+            `languageOptions: {
+                globals: {
+                    ...globals.browser,
+                    ${isUseNode ? '...globals.node' : ''},
+                },
+                parser: babelParser,
+            },`
     }
 
-
-    let modifiedConfigString = `module.exports = ${JSON.stringify(config, null, 2)};`;
-    modifiedConfigString = modifiedConfigString.replace('"parser": 1,', parser);
+    let modifiedConfigString = modifiedContent.replace('languageOptions: 111', languageOptions);
+    // modifiedConfigString = modifiedConfigString.replace('languageOptions: 111', languageOptions);
 
     const eslintPath = path.join(process.cwd(), 'eslintrc.js');
     if (fs.existsSync(eslintPath)) fs.unlinkSync(eslintPath);
@@ -53,3 +52,108 @@ const generate = (excludedPackageNames) => {
 };
 
 module.exports = { generate };
+
+function modifyFileContent(content, config) {
+  const lines = content.split('\n');
+  let modifiedLines = [];
+  let insideJsxA11yRuleBlock = false;
+  let insideReactRuleBlock = false;
+  let insideSonarjsRuleBlock = false;
+
+  lines.forEach(line => {
+    if (config.plugins.airbnb === "off") {
+      if (line.includes("const sonarjs = require('eslint-plugin-sonarjs');") || line.includes("sonarjs.configs.recommended")) {
+        return; // Skip lines related to sonarjs
+      }
+    }
+
+    if (config.plugins['jsx-a11y'] === "off") {
+      if (line.includes("'jsx-a11y/label-has-associated-control': [")) {
+        insideJsxA11yRuleBlock = true;
+        return; // Skip the start of the jsx-a11y rule block
+      }
+      if (insideJsxA11yRuleBlock) {
+        if (line.includes('],')) {
+          insideJsxA11yRuleBlock = false;
+        }
+        return; // Skip lines inside the jsx-a11y rule block
+      }
+      if (line.includes("const jsxA11y = require('eslint-plugin-jsx-a11y');")) {
+        return; // Skip jsx-a11y plugin import
+      }
+    }
+
+    if (config.plugins.react === "off") {
+      if (line.includes("'react/") || line.includes("'react-hooks/")) {
+        insideReactRuleBlock = true;
+        if (line.includes('[') && !line.includes(']')) {
+          // This line starts a multiline rule
+          return;
+        }
+        if (line.includes(']')) {
+          insideReactRuleBlock = false;
+          return; // Skip this line if it closes a multiline rule
+        }
+        if (!line.includes('[')) {
+          return; // Skip single-line rules
+        }
+      }
+      if (insideReactRuleBlock) {
+        if (line.includes('],')) {
+          insideReactRuleBlock = false;
+        }
+        return; // Skip lines inside the react rule block
+      }
+      if (line.includes("const react = require('eslint-plugin-react');") || line.includes("const eslintPluginReactHooks = require('eslint-plugin-react-hooks');")) {
+        return; // Skip react plugin imports
+      }
+    }
+
+    if (config.plugins.sonarjs === "off") {
+      if (line.includes("'sonarjs/")) {
+        insideSonarjsRuleBlock = true;
+        if (line.includes('[') && !line.includes(']')) {
+          // This line starts a multiline rule
+          return;
+        }
+        if (line.includes(']')) {
+          insideSonarjsRuleBlock = false;
+          return; // Skip this line if it closes a multiline rule
+        }
+        if (!line.includes('[')) {
+          return; // Skip single-line rules
+        }
+      }
+      if (insideSonarjsRuleBlock) {
+        if (line.includes('],')) {
+          insideSonarjsRuleBlock = false;
+        }
+        return; // Skip lines inside the sonarjs rule block
+      }
+      if (line.includes("const sonarjs = require('eslint-plugin-sonarjs');")) {
+        return; // Skip sonarjs plugin import
+      }
+    }
+
+    if (config.plugins.promise === "off" && line.includes("const pluginPromise = require('eslint-plugin-promise');")) {
+      return; // Skip promise plugin import
+    }
+
+    if (config.plugins.prettier === "off") {
+      if (line.includes("const eslintConfigPrettier = require('eslint-config-prettier');") || line.includes("const eslintPluginPrettierRecommended = require('eslint-plugin-prettier/recommended');")) {
+        return; // Skip prettier plugin imports
+      }
+      if (line.includes("eslintConfigPrettier") || line.includes("eslintPluginPrettierRecommended")) {
+        return; // Skip prettier config references
+      }
+    }
+
+    if (config.plugins.import === "off" && line.includes("const _import = require('eslint-plugin-import');")) {
+      return; // Skip import plugin import
+    }
+
+    modifiedLines.push(line); // Add the line if it doesn't match any skip conditions
+  });
+
+  return modifiedLines.join('\n');
+}

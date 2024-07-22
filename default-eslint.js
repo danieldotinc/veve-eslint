@@ -3,7 +3,6 @@ module.exports = {
     //      package and install it again
     plugins: {
         "typescript": "on", 
-        "node": "on",
         "airbnb": "on",
         "promise": "on",
         "prettier": "on",
@@ -12,7 +11,9 @@ module.exports = {
         // by default frontend packages are off (won't be installed and applied)
         "jsx-a11y": "off",
         "react": "off",
-        "react-hooks": "off"
+        "react-hooks": "off",
+        // globals: browser is on by default
+        "node": "off",
     },
     root: "src",
     overwrite: {
