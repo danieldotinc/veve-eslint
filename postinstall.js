@@ -6,7 +6,7 @@ const log = (message) => console.warn(chalk.white(message));
 
 const FILES = {
   eslintrc: {
-    source: 'eslintrc.js',
+    source: 'eslint.config.mjs',
     destination: 'eslint.config.mjs'
   },
   prettierrc: {
@@ -19,12 +19,12 @@ const FILES = {
   },
   customEslint: {
     source: 'default-eslint.js',
-    destination: '.custom-eslint.js'
+    destination: 'custom-eslint.js'
   },
 };
 
-const customEslintJsonPath = path.join('./test/', '.custom-eslint.js');
-const packageJsonPath = path.join('./test/', 'package.json');
+const customEslintJsonPath = path.join('../../', 'custom-eslint.js');
+const packageJsonPath = path.join('../../', 'package.json');
 
 const run = () => {
   if (!fs.existsSync(packageJsonPath)) {
@@ -34,10 +34,10 @@ const run = () => {
   
   Object.entries(FILES).forEach(([key, value]) => {
     const source = path.join(process.cwd(), value.source);
-    const destination = path.join('./test/', value.destination);
+    const destination = path.join('../../', value.destination);
 
     let eslintJson;
-    if (fs.existsSync(customEslintJsonPath)) eslintJson = require('./test/.custom-eslint.js')
+    if (fs.existsSync(customEslintJsonPath)) eslintJson = require('../../custom-eslint.js')
     else eslintJson = require('./default-eslint.js');
 
     if ((fs.existsSync(destination) && eslintJson.overwrite?.[key] == 'on') || !fs.existsSync(destination)) {
@@ -53,7 +53,7 @@ const run = () => {
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
 
   // at this point .custom-eslint.js is generated so we can access it
-  const { root } = require('./test/.custom-eslint.js');
+  const { root } = require('../../custom-eslint.js');
   packageJson.scripts['lint'] = `eslint --color "${root}/"`;
   packageJson.scripts[`lint:fix`] = `eslint --fix "${root}/"`;
   packageJson.scripts[`prettier:fix`] = `prettier --write "${root}/**/*.{js,ts,jsx,tsx}"`;

@@ -2,7 +2,7 @@ const globals = require('globals');
 const pluginPromise = require('eslint-plugin-promise');
 const eslintConfigPrettier = require('eslint-config-prettier');
 const eslintPluginReactHooks = require('eslint-plugin-react-hooks');
-const fixupPluginRules = require('@eslint/compat');
+const comp = require('@eslint/compat');
 const _import = require('eslint-plugin-import');
 const typescriptEslint = require('@typescript-eslint/eslint-plugin');
 const jsxA11y = require('eslint-plugin-jsx-a11y');
@@ -13,11 +13,17 @@ const FlatCompat = require('@eslint/eslintrc');
 const tsParser = require('@typescript-eslint/parser');
 const babelParser = require('@babel/eslint-parser');
 
-const compat = new FlatCompat({
-  baseDirectory: dirname
+const compat = new (FlatCompat.FlatCompat)({
+  baseDirectory: __dirname,
 });
 
 module.exports = [
+  {
+    ignores: [
+      'custom-eslint.js',
+    '.eslintrc.js',
+    ],
+  },
   pluginPromise.configs['flat/recommended'],
   eslintConfigPrettier,
   eslintPluginPrettierRecommended,
@@ -26,8 +32,8 @@ module.exports = [
   ...compat.extends('airbnb-typescript/base'),
   {
     plugins: {
-      'react-hooks': fixupPluginRules(eslintPluginReactHooks),
-      import: fixupPluginRules(_import),
+      'react-hooks': comp.fixupPluginRules(eslintPluginReactHooks),
+      import: comp.fixupPluginRules(_import),
       '@typescript-eslint': typescriptEslint,
       'jsx-a11y': jsxA11y,
       react,

@@ -2,22 +2,22 @@ const fs = require('fs');
 const path = require('path');
 const eslintrc = require('./defaultEslintConfig');
 
-const generate = (config) => {
+const generate = (plugins) => {
     // use string instead of json
     // const config = { ...eslintrc };
 
     const content = fs.readFileSync('./defaultEslintConfig.js', 'utf8');
 
-    const modifiedContent = modifyFileContent(content, excludedPackageNames);
+    const modifiedContent = modifyFileContent(content, plugins);
 
-    const isUseNode = excludedPackageNames.includes('node');
+    const isUseNode = plugins['node'] === 'on';
     let languageOptions;
-    if (excludedPackageNames.includes('typescript')) {
+    if (plugins['typescript'] && plugins['typescript'] === 'on') {
         languageOptions = 
             `languageOptions: {
                 globals: {
                     ...globals.browser,
-                    ${isUseNode ? '...globals.node' : ''},
+                    ${isUseNode ? '...globals.node,' : ''}
                 },
                 parser: tsParser,
                 parserOptions: {
@@ -29,7 +29,7 @@ const generate = (config) => {
             `languageOptions: {
                 globals: {
                     ...globals.browser,
-                    ${isUseNode ? '...globals.node' : ''},
+                    ${isUseNode ? '...globals.node,' : ''}
                 },
                 parser: babelParser,
             },`
@@ -38,7 +38,7 @@ const generate = (config) => {
     let modifiedConfigString = modifiedContent.replace('languageOptions: 111', languageOptions);
     // modifiedConfigString = modifiedConfigString.replace('languageOptions: 111', languageOptions);
 
-    const eslintPath = path.join(process.cwd(), 'eslintrc.js');
+    const eslintPath = path.join(process.cwd(), 'eslint.config.mjs');
     if (fs.existsSync(eslintPath)) fs.unlinkSync(eslintPath);
     
     fs.writeFile(eslintPath, modifiedConfigString, 'utf8', (err) => {
@@ -53,7 +53,8 @@ const generate = (config) => {
 
 module.exports = { generate };
 
-function modifyFileContent(content, config) {
+function modifyFileContent(content, plugins) {
+    console.log('plugins', plugins);
   const lines = content.split('\n');
   let modifiedLines = [];
   let insideJsxA11yRuleBlock = false;
@@ -61,13 +62,13 @@ function modifyFileContent(content, config) {
   let insideSonarjsRuleBlock = false;
 
   lines.forEach(line => {
-    if (config.plugins.airbnb === "off") {
+    if (plugins.airbnb === "off") {
       if (line.includes("const sonarjs = require('eslint-plugin-sonarjs');") || line.includes("sonarjs.configs.recommended")) {
         return; // Skip lines related to sonarjs
       }
     }
 
-    if (config.plugins['jsx-a11y'] === "off") {
+    if (plugins['jsx-a11y'] === "off") {
       if (line.includes("'jsx-a11y/label-has-associated-control': [")) {
         insideJsxA11yRuleBlock = true;
         return; // Skip the start of the jsx-a11y rule block
@@ -83,7 +84,7 @@ function modifyFileContent(content, config) {
       }
     }
 
-    if (config.plugins.react === "off") {
+    if (plugins.react === "off") {
       if (line.includes("'react/") || line.includes("'react-hooks/")) {
         insideReactRuleBlock = true;
         if (line.includes('[') && !line.includes(']')) {
@@ -109,7 +110,7 @@ function modifyFileContent(content, config) {
       }
     }
 
-    if (config.plugins.sonarjs === "off") {
+    if (plugins.sonarjs === "off") {
       if (line.includes("'sonarjs/")) {
         insideSonarjsRuleBlock = true;
         if (line.includes('[') && !line.includes(']')) {
@@ -135,11 +136,11 @@ function modifyFileContent(content, config) {
       }
     }
 
-    if (config.plugins.promise === "off" && line.includes("const pluginPromise = require('eslint-plugin-promise');")) {
+    if (plugins.promise === "off" && line.includes("const pluginPromise = require('eslint-plugin-promise');")) {
       return; // Skip promise plugin import
     }
 
-    if (config.plugins.prettier === "off") {
+    if (plugins.prettier === "off") {
       if (line.includes("const eslintConfigPrettier = require('eslint-config-prettier');") || line.includes("const eslintPluginPrettierRecommended = require('eslint-plugin-prettier/recommended');")) {
         return; // Skip prettier plugin imports
       }
@@ -148,7 +149,7 @@ function modifyFileContent(content, config) {
       }
     }
 
-    if (config.plugins.import === "off" && line.includes("const _import = require('eslint-plugin-import');")) {
+    if (plugins.import === "off" && line.includes("const _import = require('eslint-plugin-import');")) {
       return; // Skip import plugin import
     }
 

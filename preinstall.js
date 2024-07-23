@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const { generate } = require('./eslint');
 
-const customEslintJsonPath = path.join('./test/', '.custom-eslint.js');
+const customEslintJsonPath = path.join('../../', 'custom-eslint.js');
 const defaultEslintJsonPath = path.join(process.cwd(), 'default-eslint.js');
 const packageJsonPath = path.join(process.cwd(), 'package.json');
 
@@ -18,9 +18,9 @@ const run = () => {
   
   if (plugins.typescript === 'off') {
     // drop typescript rules and dependencies
-    delete packageJson.dependencies['@typescript-eslint/eslint-plugin'];
-    delete packageJson.dependencies['@typescript-eslint/parser'];
-    delete packageJson.dependencies['eslint-config-airbnb-typescript'];
+    // delete packageJson.dependencies['typescript-eslint/eslint-plugin'];
+    delete packageJson.dependencies['typescript-eslint'];
+    // delete packageJson.dependencies['eslint-config-airbnb-typescript'];
     // disabledPackages.push('typescript');
   }
 
@@ -81,7 +81,7 @@ const run = () => {
   //   disabledPackages.push('node');
   // }
 
-  generate({config: {plugins}});
+  generate(plugins);
   fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
 };
 
