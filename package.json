@@ -1,6 +1,6 @@
 {
   "name": "veve-eslint",
-  "version": "1.9.23",
+  "version": "1.9.24",
   "description": "Quality standard rules for apps (node, react, next...) written in typescript/javascript",
   "keywords": [
     "eslint",
